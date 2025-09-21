@@ -153,10 +153,9 @@ class Signup
 
 class Insta
 {
-	static Scanner sc = new Scanner(System.in);
 	private String[] user_Name = {"Sivani", "Sai Lakshmi", "Akhila",""};
 	private String[] password = {"Sivani@09", "SaiLakshmi@12", "Akhila@34",""};
-	private String[] phNo = {"9876543210", "8765432109", "7654321098", 1};
+	private String[] phNo = {"9876543210", "8765432109", "7654321098", ""};
 	String[] getName()
 	{
 		return user_Name;
@@ -181,17 +180,20 @@ class Insta
 	{
 		this.phNo[i] = PhNo;
 	}
+
 }
 
 
 class Authentication
 {
+	static Scanner sc = new Scanner(System.in);
+	static Insta in = new Insta();
+	String n1[] = in.getName();
+	String n2[] = in.getPassword();
+	String n3[] = in.getPhNo();
 	void verify(String User_Name, String Password, String PhNo, Insta in)
 	{
 			int i = 0;
-			String n1 = in.getName();
-			String n2 = in.getPassword();
-			String n3 = in.getPhNo();
 			for(i=0; i<n1.length; i++)
 			{
 				if(n1[i].equals(User_Name))
@@ -199,7 +201,16 @@ class Authentication
 					if(n2[i].equals(Password))
 					{
 						System.out.println("Your Account Already Exists");
-						verify(User_Name, Password);
+						System.out.println("Do you want to Login?");
+						String n4 = sc.next();
+						if(n4.equalsIgnoreCase("yes"))
+						{
+							verify(User_Name, Password, in, 0);
+						}
+						else
+						{	
+							System.out.println("Exited");
+						}
 					}
 					else
 					{
@@ -229,20 +240,21 @@ class Authentication
 			{
 				System.out.println("Wrong Password\nDo You Want to Reset Password or See Password");
 				String s1 = sc.next();
-				if(s1.equalsIgnorecase("reset"))
+				if(s1.equalsIgnoreCase("reset"))
 				{
 					System.out.println("Enter New password");
-					in.setPassword(sc.next());
-					verify(User_Name, in.n2[i], in, 0);
+					in.setPassword(sc.next(),i);
+					verify(User_Name, n2[i], in, 0);
 				}			
-			}
-			else
+			} 
+			else if(!n1[i].equals(User_Name) && !n2[i].equals(Password))
+
 			{
 				System.out.println("Invalid Credentials");
 				if(a<=3)
 				{
 					System.out.println("Enter Your User Name and Password again");
-					verify(sc.next(), sc.next(), in, );
+					verify(sc.next(), sc.next(), in, a);
 				}
 				else
 				{
@@ -256,7 +268,7 @@ class Authentication
 		System.out.println("Enter Your Mobile Number");
 		String s1 = sc.next();
 		int otp = (int)(Math.random()*10000);
-		System.out.println("Sending OTP to "+ s1);
+		System.out.println("Sending OTP to "+ s1 + " " + otp);
 		System.out.println("Enter OTP");
 		int o1 = sc.nextInt();
 		if(o1==otp)
@@ -280,19 +292,22 @@ class Authentication
 	public static void main(String[]args)
 	{
 		Authentication au = new Authentication();
-		Insta in = new Insta();
 		System.out.println("Welcome!\n1.SignUp\n2.LogIn\nEnter Your Choice Number:");
 		int a = sc.nextInt();
 		if(a==1)
 		{
-			Signup ob = new Signup(mu2(),mp2(),mw2());
-			au.verify(ob.mu2(), ob.mw2(), ob.mp2, in);
+			Signup ob = new Signup(Signup.mu2(),Signup.mp2(),Signup.mw2());
+			au.verify(ob.mu2(), ob.mw2(), ob.mp2(), in);
 
+		}
+		else if(a==2)
+		{
+			System.out.println("Enter User Name and Pasword");
+			au.verify(sc.next(), sc.next(), in, 0);
 		}
 		else
 		{
-			System.out.println("Enter User Name and Pasword");
-			au.verify(sc.next(), sc.next(), in);
+			System.out.println("Exited");
 		}
 	}
 }
