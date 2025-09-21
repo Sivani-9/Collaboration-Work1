@@ -1,11 +1,11 @@
 import java.util.*;
-class A
+class Signup
 {
 	static Scanner sc=new Scanner(System.in);
 	private String username;
 	private String phoneNo;
 	private String passWord;
-	A(String user,String no,String pass)
+	Signup(String user,String no,String pass)
 	{
 		this.username=user;
 		this.phoneNo=no;
@@ -285,7 +285,7 @@ class Authentication
 		int a = sc.nextInt();
 		if(a==1)
 		{
-			A ob = new A(mu2(),mp2(),mw2());
+			Signup ob = new Signup(mu2(),mp2(),mw2());
 			au.verify(ob.mu2(), ob.mw2(), ob.mp2, in);
 
 		}
