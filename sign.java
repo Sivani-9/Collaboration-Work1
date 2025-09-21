@@ -150,9 +150,40 @@ class A
 	public static void main(String[]args)
 	{		
 		
-		A ob=new A(mu2(),mp2(),mw2());
 		System.out.println("Sign up successful! You can now log in and start using your account.");
 
 	}
 
+}
+
+
+
+class Insta
+{
+	static Scanner sc = new Scanner(System.in);
+	private String[] user_Name = {"Sivani", "Sai Lakshmi", "Akhila"};
+	private String[] password = {"Sivani@09", "SaiLakshmi@12", "Akhila@34"};
+	private long[] phNo = {9876543210, 8765432109, 7654321098};
+	void verify(String User_Name, String Password)
+	{
+	}
+	public static void main(String[]args)
+	{
+		Insta in = new Insta();
+		System.out.println("Welcome!\n1.SignUp\n2.LogIn\nEnter Your Choice Number:");
+		int a = sc.nextInt();
+		if(a==1)
+		{
+			A ob = new A(mu2(),mp2(),mw2());
+			in.verify(ob.mu2(), ob.mw2());
+			System.out.println("Sign up successful! You can now log in and start using your account.");
+
+		}
+		else
+		{
+			System.out.println("Enter User Name and Pasword");
+			in.verify();
+			System.out.println("You are Welcome");
+		}
+	}
 }
