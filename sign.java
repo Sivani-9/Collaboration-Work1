@@ -43,7 +43,10 @@ class Signup
 		return mu2();
 		
 	}
-
+	String mu3()
+	{
+		return username;
+	}
 	static boolean mp1(String phone)
 	{
 		  if (phone == null) 
@@ -82,7 +85,10 @@ class Signup
 		return mp2();
 		
 	}
-
+	String mp3()
+	{
+		return phoneNo;
+	}
 	static boolean mw1(String password) {
     if (password == null) {
         System.out.println("Password cannot be empty.");
@@ -146,6 +152,10 @@ class Signup
 		return mw2();
 		
 	}
+	String mw3()
+	{
+		return passWord;
+	}
 
 }
 
@@ -206,10 +216,12 @@ class Authentication
 						if(n4.equalsIgnoreCase("yes"))
 						{
 							verify(User_Name, Password, in, 0);
+							break;
 						}
 						else
 						{	
 							System.out.println("Exited");
+							break;
 						}
 					}
 					else
@@ -221,8 +233,13 @@ class Authentication
 			if(i==n1.length)
 			{
 				n1[i-1] = User_Name;	n2[i-1] = Password;	n3[i-1] = PhNo;
+				in.setName(User_Name, i-1);	in.setPassword(Password, i-1);	in.setPhNo(PhNo, i-1);
+				/* for (String p: n1)
+				{
+					System.out.println(p);
+				} */
 				System.out.println("Sign up successful! You can now log in and start using your account.");
-				verify(User_Name, Password, in, 0);
+				verify(User_Name, Password, in, 15);
 			}
 	}
 
@@ -230,43 +247,91 @@ class Authentication
 	{
 		int i = 0;
 		++a;
-		for(i=0; i<n1.length; i++)
+		int b = 1;
+		for(int j=0; j<n1.length; j++)
 		{
-			if(n1[i].equals(User_Name) && n2[i].equals(Password))
+			if(n1[j].equals(User_Name))
 			{
-				check(0);
+				b = 2;
+				break;
+			}	
+			else
+			{
+				continue;
 			}
-			else if(n1[i].equals(User_Name) && !n2[i].equals(Password))
+		}
+		if(b!=2)
+		{
+			System.out.println("Invalid Credentials");
+			if(a<=3)
 			{
-				System.out.println("Wrong Password\nDo You Want to Reset Password or See Password");
-				String s1 = sc.next();
-				if(s1.equalsIgnoreCase("reset"))
-				{
-					System.out.println("Enter New password");
-					in.setPassword(sc.next(),i);
-					verify(User_Name, n2[i], in, 0);
-				}			
-			} 
-			else if(!n1[i].equals(User_Name) && !n2[i].equals(Password))
-
+				System.out.println("Enter Your User Name and Password again");
+				verify(sc.next(), sc.next(), in, a);
+			}
+			else
 			{
-				System.out.println("Invalid Credentials");
-				if(a<=3)
+				System.out.println("Too Many Wrong Attempts \nTry after sometime.....");				
+			}
+		}
+		else
+		{
+			for(i=0; i<n1.length; i++)
+			{
+				if(n1[i].equals(User_Name) && n2[i].equals(Password))
 				{
-					System.out.println("Enter Your User Name and Password again");
-					verify(sc.next(), sc.next(), in, a);
+					if(a==15 || a==16)
+					{
+						System.out.println("Welcome to Home Page");
+						break;
+					}
+					else
+					{
+						check(0,i);
+						break;
+					}
 				}
+				else if(n1[i].equals(User_Name) && !n2[i].equals(Password))
+				{
+					System.out.println("Wrong Password\nDo You Want to Reset Password or See Password");
+					String s1 = sc.next();
+					if(s1.equalsIgnoreCase("reset"))
+					{
+						System.out.println("Enter New password");
+						in.setPassword(sc.next(),i);
+						System.out.println("Enter User Name and Password again");
+						verify(sc.next(), sc.next(), in, 0);
+					}	
+					else if(s1.equalsIgnoreCase("See"))
+					{
+						System.out.println((in.getPassword())[i]);
+						System.out.println("Enter User Name and Password again");
+						verify(sc.next(), sc.next(), in, 0);
+
+					}
+					else
+					{
+						System.out.println("Enter Valid Option");
+						verify(User_Name, Password, in, 0);
+					}
+				} 
+				/*else if(!n1[i].equals(User_Name) && !n2[i].equals(Password))
+
+				{
+				
+				}*/
 				else
 				{
-					System.out.println("Too Many Wrong Attempts \nTry after sometime.....");				
+					continue;
 				}
 			}
 		}
 	}
-	void check(int a)
+	void check(int a, int i)
 	{
 		System.out.println("Enter Your Mobile Number");
 		String s1 = sc.next();
+		if(s1.equals(n3[i]))
+		{
 		int otp = (int)(Math.random()*10000);
 		System.out.println("Sending OTP to "+ s1 + " " + otp);
 		System.out.println("Enter OTP");
@@ -277,14 +342,29 @@ class Authentication
 		}
 		else
 		{
+			System.out.println("Wrong OTP");
 			System.out.println("OTP Isn't Matching");
 			if(a>3)
 			{
-				System.out.println("Too Many Wrong Attempts \nTry after sometime.....");
+				
 			}		
 			else
 			{
-				check(++a);
+				check(++a,i);
+			}
+		}
+		}
+		else
+		{
+			if(a>3)
+			{
+				System.out.println("Too Many Wrong Attempts \nTry after sometime.....");
+			
+			}
+			else
+			{
+				System.out.println("Incorrect Mobile Number");
+				check(++a,i);
 			}
 		}
 	}
@@ -297,7 +377,7 @@ class Authentication
 		if(a==1)
 		{
 			Signup ob = new Signup(Signup.mu2(),Signup.mp2(),Signup.mw2());
-			au.verify(ob.mu2(), ob.mw2(), ob.mp2(), in);
+			au.verify(ob.mu3(), ob.mw3(), ob.mp3(), in);
 
 		}
 		else if(a==2)
