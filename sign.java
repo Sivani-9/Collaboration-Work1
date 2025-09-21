@@ -147,13 +147,6 @@ class A
 		
 	}
 
-	public static void main(String[]args)
-	{		
-		
-		System.out.println("Sign up successful! You can now log in and start using your account.");
-
-	}
-
 }
 
 
@@ -161,29 +154,145 @@ class A
 class Insta
 {
 	static Scanner sc = new Scanner(System.in);
-	private String[] user_Name = {"Sivani", "Sai Lakshmi", "Akhila"};
-	private String[] password = {"Sivani@09", "SaiLakshmi@12", "Akhila@34"};
-	private long[] phNo = {9876543210, 8765432109, 7654321098};
-	void verify(String User_Name, String Password)
+	private String[] user_Name = {"Sivani", "Sai Lakshmi", "Akhila",""};
+	private String[] password = {"Sivani@09", "SaiLakshmi@12", "Akhila@34",""};
+	private String[] phNo = {"9876543210", "8765432109", "7654321098", 1};
+	String[] getName()
 	{
+		return user_Name;
 	}
+	String[] getPassword()
+	{
+		return password;
+	}
+	String[] getPhNo()
+	{
+		return phNo;
+	}
+	void setName(String User_Name, int i)
+	{
+		this.user_Name[i] = User_Name;
+	}
+	void setPassword(String Password, int i)
+	{
+		this.password[i] = Password;
+	}
+	void setPhNo(String PhNo, int i)
+	{
+		this.phNo[i] = PhNo;
+	}
+}
+
+
+class Authentication
+{
+	void verify(String User_Name, String Password, String PhNo, Insta in)
+	{
+			int i = 0;
+			String n1 = in.getName();
+			String n2 = in.getPassword();
+			String n3 = in.getPhNo();
+			for(i=0; i<n1.length; i++)
+			{
+				if(n1[i].equals(User_Name))
+				{
+					if(n2[i].equals(Password))
+					{
+						System.out.println("Your Account Already Exists");
+						verify(User_Name, Password);
+					}
+					else
+					{
+						continue;
+					}
+				}
+			}
+			if(i==n1.length)
+			{
+				n1[i-1] = User_Name;	n2[i-1] = Password;	n3[i-1] = PhNo;
+				System.out.println("Sign up successful! You can now log in and start using your account.");
+				verify(User_Name, Password, in, 0);
+			}
+	}
+
+	void verify(String User_Name, String Password, Insta in, int a)
+	{
+		int i = 0;
+		++a;
+		for(i=0; i<n1.length; i++)
+		{
+			if(n1[i].equals(User_Name) && n2[i].equals(Password))
+			{
+				check(0);
+			}
+			else if(n1[i].equals(User_Name) && !n2[i].equals(Password))
+			{
+				System.out.println("Wrong Password\nDo You Want to Reset Password or See Password");
+				String s1 = sc.next();
+				if(s1.equalsIgnorecase("reset"))
+				{
+					System.out.println("Enter New password");
+					in.setPassword(sc.next());
+					verify(User_Name, in.n2[i], in, 0);
+				}			
+			}
+			else
+			{
+				System.out.println("Invalid Credentials");
+				if(a<=3)
+				{
+					System.out.println("Enter Your User Name and Password again");
+					verify(sc.next(), sc.next(), in, );
+				}
+				else
+				{
+					System.out.println("Too Many Wrong Attempts \nTry after sometime.....");				
+				}
+			}
+		}
+	}
+	void check(int a)
+	{
+		System.out.println("Enter Your Mobile Number");
+		String s1 = sc.next();
+		int otp = (int)(Math.random()*10000);
+		System.out.println("Sending OTP to "+ s1);
+		System.out.println("Enter OTP");
+		int o1 = sc.nextInt();
+		if(o1==otp)
+		{
+			System.out.println("Welcome To Home Page");
+		}
+		else
+		{
+			System.out.println("OTP Isn't Matching");
+			if(a>3)
+			{
+				System.out.println("Too Many Wrong Attempts \nTry after sometime.....");
+			}		
+			else
+			{
+				check(++a);
+			}
+		}
+	}
+
 	public static void main(String[]args)
 	{
+		Authentication au = new Authentication();
 		Insta in = new Insta();
 		System.out.println("Welcome!\n1.SignUp\n2.LogIn\nEnter Your Choice Number:");
 		int a = sc.nextInt();
 		if(a==1)
 		{
 			A ob = new A(mu2(),mp2(),mw2());
-			in.verify(ob.mu2(), ob.mw2());
-			System.out.println("Sign up successful! You can now log in and start using your account.");
+			au.verify(ob.mu2(), ob.mw2(), ob.mp2, in);
 
 		}
 		else
 		{
 			System.out.println("Enter User Name and Pasword");
-			in.verify(sc.next(), sc.next());
-			System.out.println("You are Welcome");
+			au.verify(sc.next(), sc.next(), in);
 		}
 	}
 }
