@@ -182,7 +182,7 @@ class Insta
 		else
 		{
 			System.out.println("Enter User Name and Pasword");
-			in.verify();
+			in.verify(sc.next(), sc.next());
 			System.out.println("You are Welcome");
 		}
 	}
